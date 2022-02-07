@@ -1,0 +1,5 @@
+std_msgs/Int32MultiArray grid
+geometry_msgs/Point start
+geometry_msgs/Point goal
+---
+std_msgs/UInt32 steps
