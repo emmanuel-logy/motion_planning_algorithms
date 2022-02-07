@@ -20,7 +20,7 @@ At the moment, a few Basic Algorithms to search for a path in the graph is imple
 </p>
 
 ~~~
-> :information_source: Here's the number of cells each algorithm visits before hitting the goal
+Here's the number of cells each algorithm visits before hitting the goal:
   
   * It takes 64 steps to find a path using BFS
   * It takes 33 steps to find a path using DFS
