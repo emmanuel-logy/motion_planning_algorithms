@@ -1,11 +1,13 @@
 # Motion Planning Algorithms
 
 ## Overview
-At the moment, a few Basic Algorithms to search for a path in the graph is implemented in C++:
+At the moment, the following graph search algorithms are implemented:
 1. Breadth First Search (BFS)
 2. Dept First Search (DFS)
 3. Dijkstra
 4. A*
+
+> :information_source: The algorithms are implemented in C++ and the visualization is done using Python scripts.
 
 ---
 ### Output paths in the graph 
