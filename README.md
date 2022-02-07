@@ -19,14 +19,14 @@ At the moment, a few Basic Algorithms to search for a path in the graph is imple
   <img src="media/4_AStar.png" width="320" />
 </p>
 
-
-> :information_source: 
-  Here's the number of cells each algorithm visits before hitting the goal
+~~~
+> :information_source: Here's the number of cells each algorithm visits before hitting the goal
+  
   * It takes 64 steps to find a path using BFS
   * It takes 33 steps to find a path using DFS
   * It takes 64 steps to find a path using Dijkstra
   * It takes 60 steps to find a path using A*
-
+~~~
 
 ---
 ## Deployment Diagram using UML
