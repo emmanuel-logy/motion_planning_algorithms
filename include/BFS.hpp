@@ -34,17 +34,6 @@ namespace motion_planning
 
 		int m_total_cols;
 
-		void initialize_graph(const Eigen::MatrixXi& grid,
-							  const Eigen::Vector2i& start,
-							  const Eigen::Vector2i& goal);
-
-		void find_valid_neighbors(const shared_ptr<Node>& current_node,
-				 	 	 		  vector<shared_ptr<Node>>& neighbors_list);
-
-		bool search_path(const Eigen::Vector2i& start,
-						 const Eigen::Vector2i& goal,
-						 vector<Eigen::Vector2i>& path);
-
 	};
 
 }    	// namespace motion_planning

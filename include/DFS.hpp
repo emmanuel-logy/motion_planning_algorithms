@@ -36,18 +36,7 @@ namespace motion_planning
 
 		bool m_goal_hit;
 
-		void initialize_graph(const Eigen::MatrixXi& grid,
-							  const Eigen::Vector2i& start,
-							  const Eigen::Vector2i& goal);
-
-		void find_valid_neighbors(const shared_ptr<Node> current_node,
-								  vector<shared_ptr<Node>>& neighbors_list);
-
 		void dfs_recursive_visit(shared_ptr<Node> current_node, shared_ptr<Node> goal_node, int& steps);
-
-		bool search_path(const Eigen::Vector2i& start,
-						 const Eigen::Vector2i& goal,
-						 vector<Eigen::Vector2i>& path);
 
 	};
 

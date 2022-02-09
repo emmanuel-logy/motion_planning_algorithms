@@ -3,6 +3,7 @@
  */
 
 #include "DFS.hpp"
+#include "Utils.hpp"
 #include <algorithm>
 
 namespace motion_planning
@@ -30,60 +31,20 @@ namespace motion_planning
 		steps = 0;
 
 		// [1] Converting the input grid into graph of Nodes and initializing each node
-		initialize_graph(grid, start, goal);
+		m_total_rows = grid.rows();
+		m_total_cols = grid.cols();
+		m_graph = MatrixXNode(m_total_rows, m_total_cols);		// empty graph matrix is ready
+		Utils::initialize_graph(grid, m_graph);
+
 
 		// [2] Start DFS logic
 		auto start_node = m_graph(start(0), start(1));
 		auto goal_node = m_graph(goal(0), goal(1));
 		dfs_recursive_visit(start_node, goal_node, steps);
 
+
 		// [3] Using updated graph's info, find the path from start to goal
-		return search_path(start, goal, path);
-	}
-
-
-	void DFS::initialize_graph(const Eigen::MatrixXi& grid,
-							   const Eigen::Vector2i& start,
-							   const Eigen::Vector2i& goal)
-	{
-		m_total_rows = grid.rows();
-		m_total_cols = grid.cols();
-		m_graph = MatrixXNode(m_total_rows, m_total_cols);		// empty graph matrix is ready
-
-		// Fill the graph matrix with Nodes corresponding to grid information
-		for (int i=0; i<m_total_rows; ++i)
-		{
-			for (int j=0; j<m_total_cols; ++j)
-			{
-				m_graph(i,j) = make_shared<Node>(i, j, grid(i,j));
-			}
-		}
-	}
-
-
-	void DFS::find_valid_neighbors(const shared_ptr<Node> current_node,
-							 	   vector<shared_ptr<Node>>& neighbors_list)
-	{
-		neighbors_list.clear();
-
-		int row = current_node->row;
-		int col = current_node->col;
-
-		// Right neighbor
-		if ( (col+1)< m_total_cols && !m_graph(row, col+1)->obs)
-			neighbors_list.push_back(m_graph(row, col+1));
-
-		// Bottom neighbor
-		if ( (row+1)< m_total_rows && !m_graph(row+1, col)->obs)
-			neighbors_list.push_back(m_graph(row+1, col));
-
-		// Left neighbor
-		if ( (col-1)> 0 && !m_graph(row, col-1)->obs)
-			neighbors_list.push_back(m_graph(row, col-1));
-
-		// Top neighbor
-		if ( (row-1)> 0 && !m_graph(row-1, col)->obs)
-			neighbors_list.push_back(m_graph(row-1, col));
+		return Utils::search_path(m_graph, start, goal, path);
 	}
 
 
@@ -93,11 +54,14 @@ namespace motion_planning
 		if (!m_goal_hit)
 			steps += 1;
 
-		vector<shared_ptr<Node>> neighbors;
-		find_valid_neighbors(current_node, neighbors);
+		vector<pair<shared_ptr<Node>,int>> neighbors_w;
+		Utils::find_valid_neighbors(m_graph, current_node, neighbors_w);
 
-		for (auto node : neighbors)
+		for (auto node_w : neighbors_w)
 		{
+			auto node = node_w.first;
+			auto w = node_w.second;		// not useful for this algo
+
 			if ( node && !node->visited )
 			{
 				node->parent = current_node;
@@ -110,38 +74,6 @@ namespace motion_planning
 
 				dfs_recursive_visit(node, goal_node, steps);
 			}
-		}
-	}
-
-
-
-	bool DFS::search_path(const Eigen::Vector2i& start,
-						  const Eigen::Vector2i& goal,
-						  vector<Eigen::Vector2i>& path)
-	{
-		path.clear();
-
-		auto start_node = m_graph(start(0), start(1));
-		auto current_node = m_graph(goal(0), goal(1));
-
-		// If parent doesn't exist for goal node, then path was not found
-		if (current_node->parent == nullptr)
-		{
-			path.clear();
-			return false;
-		}
-		else
-		{
-			// Starting from goal node, move to start node using parent info to find the path
-			while (current_node != m_graph(start(0), start(1)))
-			{
-				path.push_back({current_node->row, current_node->col});
-				current_node = m_graph(current_node->parent->row, current_node->parent->col);
-			}
-			path.push_back({current_node->row, current_node->col});		// push start node also
-
-			reverse(path.begin(), path.end());							// get path from start to goal
-			return true;
 		}
 	}
 

@@ -64,7 +64,7 @@ file(GLOB SOURCES "src/*.cpp")
 #		src/main.cpp
 #		src/BFS.cpp	
 #)
-message(8888888886555555555////////////-------**********55--- ${SOURCES})
+message(8888888886555555555////////////-------**********55** ${SOURCES})
 add_executable(hw1_basic_search_algo ${SOURCES})
 #add_dependencies(hw1_basic_search_algo HW1_BasicSearchAlgo_generate_messages_cpp)
 target_link_libraries(hw1_basic_search_algo ${catkin_LIBRARIES} Eigen3::Eigen)
