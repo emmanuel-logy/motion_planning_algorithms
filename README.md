@@ -31,10 +31,11 @@ Here's the number of cells each algorithm visits before hitting the goal:
 ~~~
 
 ---
-## Deployment Diagram using UML
+## High Level View
 
-Yet to add . . .
-
+<p float="left">
+  <img src="media/5_Classes.png" width="480" />
+</p>
 
 
 
@@ -59,4 +60,12 @@ Yet to add . . .
 	
 ---
     
+    
+---
+## For further explanation
+
+Please refer to the docs/Emmanuel_Report.pdf for more detailed explanation
+	
+	
+---
     
