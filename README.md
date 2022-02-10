@@ -34,7 +34,7 @@ Here's the number of cells each algorithm visits before hitting the goal:
 ## High Level View
 
 <p float="left">
-  <img src="media/5_Classes.png" width="480" />
+  <img src="media/5_Classes.png" height="480" width="896" />
 </p>
 
 
@@ -50,16 +50,6 @@ To build from source, clone the latest version from this repository into your ca
 	$ cd ..
 	$ catkin_make
 	```
-
-
----
-## Usage
-
-Yet to add . . . 
-	
-	
----
-    
     
 ---
 ## For further explanation
