@@ -24,7 +24,7 @@ namespace motion_planning
 										 vector<pair<shared_ptr<Node>,int>>& neighbors_w_list);
 
 
-		static bool search_path(const MatrixXNode& graph,
+		static bool generate_path(const MatrixXNode& graph,
 								const Eigen::Vector2i& start,
 								const Eigen::Vector2i& goal,
 								vector<Eigen::Vector2i>& path);

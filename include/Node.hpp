@@ -14,17 +14,28 @@ using namespace std;
 namespace motion_planning
 {
 
-    enum class Heuristic
-	{
-    	BFS,
-		DFS,
-		DIJKSTRA,
-		ASTAR
-	};
+//    enum class Heuristic
+//	{
+//    	BFS,
+//		DFS,
+//		DIJKSTRA,
+//		ASTAR
+//	};
 
 
     struct Node
     {
+    	int row;
+    	int col;
+    	bool obs;
+    	int g;						// cost to come (previous g + moving cost).. edge value
+    	int cost;					// total cost (depend on the algorithm)
+    	int h;						// heuristic
+    	bool visited;
+    	shared_ptr<Node> parent;	// previous node through which this node was visited
+    	vector<int> edge_w;			// edge value ... size will be four as it stores weights to move to its neighboring 4-connected nodes
+
+
     	Node (int in_row, int in_col, bool in_obs)
     	{
     		row = in_row;
@@ -35,19 +46,10 @@ namespace motion_planning
     		cost = numeric_limits<int>::max();
     		visited = false;
     		parent = nullptr;
+    		h = 0;
 
     		edge_w = {1,1,1,1};		// Right,Down,Left,Top
     	}
-
-    	int row;
-    	int col;
-    	bool obs;
-    	int g;						// cost to come (previous g + moving cost).. edge value
-    	int cost;					// total cost (depend on the algorithm)
-    	Heuristic h;				// heuristic
-    	bool visited;
-    	shared_ptr<Node> parent;	// previous node through which this node was visited
-    	vector<int> edge_w;			// edge value ... size will be four as it stores weights to move to its neighboring 4-connected nodes
 
     	bool operator== (const Node& n)
     	{

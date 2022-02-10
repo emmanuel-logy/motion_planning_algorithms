@@ -82,7 +82,7 @@ namespace motion_planning
 		}
 
 		// [5] Using updated graph's info, find the path from start to goal
-		return Utils::search_path(m_graph, start, goal, path);
+		return Utils::generate_path(m_graph, start, goal, path);
 	}
 
 }	// namespace motion_planning

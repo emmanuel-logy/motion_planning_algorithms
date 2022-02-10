@@ -67,7 +67,7 @@ namespace motion_planning
 	}
 
 
-	bool Utils::search_path(const MatrixXNode& graph,
+	bool Utils::generate_path(const MatrixXNode& graph,
 							const Eigen::Vector2i& start,
 						    const Eigen::Vector2i& goal,
 						    vector<Eigen::Vector2i>& path)

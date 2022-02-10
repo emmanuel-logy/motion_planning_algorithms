@@ -28,11 +28,8 @@ namespace motion_planning
 	}
 
 
-	bool AStar::search(const Eigen::MatrixXi& grid,
-					   const Eigen::Vector2i& start,
-					   const Eigen::Vector2i& goal,
-					   vector<Eigen::Vector2i>& path,
-					   int& steps)
+	bool AStar::search(const Eigen::MatrixXi& grid, const Eigen::Vector2i& start, const Eigen::Vector2i& goal,
+					   vector<Eigen::Vector2i>& path, int& steps)
 	{
 		cout << "searching . . ." << endl;
 
@@ -40,18 +37,15 @@ namespace motion_planning
 		path.clear();
 		steps = 0;
 
-
 		// [1] Converting the input grid into graph of Nodes and initializing each node
 		m_total_rows = grid.rows();
 		m_total_cols = grid.cols();
 		m_graph = MatrixXNode(m_total_rows, m_total_cols);		// empty graph matrix is ready
 		Utils::initialize_graph(grid, m_graph);
 
-
 		// [2] Start & Goal node
 		auto start_node = m_graph(start(0), start(1));
 		auto goal_node 	= m_graph(goal(0), goal(1));
-
 
 		// [3] Queuing the nodes to visit in the loop
 		priority_queue <shared_ptr<Node>,
@@ -85,12 +79,13 @@ namespace motion_planning
 				{
 					auto node = node_w.first;
 					auto w = node_w.second;
+					auto h = abs(goal_node->row - node->row) + abs(goal_node->col - node->col);
+					auto f = (current_node->cost - current_node->h) + w + h;
+					current_node->h = h;
 
-					auto d = current_node->cost + w;
-					d += abs(goal_node->row - node->row) + abs(goal_node->col - node->col);
-					if ( !node->visited && d < node->cost )
+					if ( !node->visited && f < node->cost )
 					{
-						node->cost 	 	= d;
+						node->cost 	 	= f;
 						node->parent 	= current_node;
 						Q.push(node);
 					}
@@ -99,7 +94,7 @@ namespace motion_planning
 		}
 
 		// [5] Using updated graph's info, find the path from start to goal
-		return Utils::search_path(m_graph, start, goal, path);
+		return Utils::generate_path(m_graph, start, goal, path);
 	}
 
 

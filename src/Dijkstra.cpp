@@ -45,7 +45,6 @@ namespace motion_planning
 		m_graph = MatrixXNode(m_total_rows, m_total_cols);		// empty graph matrix is ready
 		Utils::initialize_graph(grid, m_graph);
 
-
 		// [2] Start & Goal node
 		auto start_node = m_graph(start(0), start(1));
 		auto goal_node 	= m_graph(goal(0), goal(1));
@@ -93,7 +92,7 @@ namespace motion_planning
 		}
 
 		// [5] Using updated graph's info, find the path from start to goal
-		return Utils::search_path(m_graph, start, goal, path);
+		return Utils::generate_path(m_graph, start, goal, path);
 	}
 
 

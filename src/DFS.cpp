@@ -37,14 +37,14 @@ namespace motion_planning
 		Utils::initialize_graph(grid, m_graph);
 
 
-		// [2] Start DFS logic
+		// [2] Start DFS recursive logic
 		auto start_node = m_graph(start(0), start(1));
 		auto goal_node = m_graph(goal(0), goal(1));
 		dfs_recursive_visit(start_node, goal_node, steps);
 
 
 		// [3] Using updated graph's info, find the path from start to goal
-		return Utils::search_path(m_graph, start, goal, path);
+		return Utils::generate_path(m_graph, start, goal, path);
 	}
 
 
@@ -60,7 +60,7 @@ namespace motion_planning
 		for (auto node_w : neighbors_w)
 		{
 			auto node = node_w.first;
-			auto w = node_w.second;		// not useful for this algo
+			auto w = node_w.second;				// not useful for this algo
 
 			if ( node && !node->visited )
 			{
@@ -69,7 +69,7 @@ namespace motion_planning
 				if (node == goal_node)
 				{
 					m_goal_hit = true;
-					steps += 1;				// since we need to count goal_node also
+					steps += 1;					// since we need to count goal_node also
 				}
 
 				dfs_recursive_visit(node, goal_node, steps);
