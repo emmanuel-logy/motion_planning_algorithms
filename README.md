@@ -1,7 +1,23 @@
 # Motion Planning Algorithms
 
-## Overview
-At the moment, the following graph search algorithms are implemented:
+## Sampling Based Algorithms
+The following sampling based algorithms are implemented in Python:
+1. RRT
+2. RRT*
+3. PRM - Uniform Sampling
+4. PRM - Random Sampling
+5. PRM - Gaussian Sampling
+6. PRM - Bridge Sampling
+
+### Results
+<figure>
+    <img src="media/sampling_results.png" height="580" width="1080" />
+</figure>
+
+
+
+## Grid Based Algorithms
+At the moment, the following graph search algorithms are implemented in C++:
 1. Breadth First Search (BFS)
 2. Dept First Search (DFS)
 3. Dijkstra
