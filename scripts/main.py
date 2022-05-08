@@ -1,71 +1,57 @@
+# Main and helper function
+
+from PIL import Image
+import numpy as np
+from RRT import RRT
+from PRM import PRM
+
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-import csv
-
-from search import dfs, bfs, dijkstra, astar
 
 
-# Load map, start and goal point.
-def load_map(file_path):
-    grid = []
-    start = [0, 0]
-    goal = [0, 0]
-    # Load from the file
-    with open(file_path, 'r') as map_file:
-        reader = csv.reader(map_file)
-        for i, row in enumerate(reader):
-            # load start and goal point
-            if i == 0:
-                start[0] = int(row[1])
-                start[1] = int(row[2])
-            elif i == 1:
-                goal[0] = int(row[1])
-                goal[1] = int(row[2])
-            # load the map
-            else:
-                int_row = [int(col) for col in row]
-                grid.append(int_row)
-    return grid, start, goal
+def load_map(file_path, resolution_scale):
+    ''' Load map from an image and return a 2D binary numpy array
+        where 0 represents obstacles and 1 represents free space
+    '''
+    # Load the image with grayscale
+    img = Image.open(file_path).convert('L')
+    # Rescale the image
+    size_x, size_y = img.size
+    new_x, new_y  = int(size_x*resolution_scale), int(size_y*resolution_scale)
+    img = img.resize((new_x, new_y), Image.ANTIALIAS)
 
+    map_array = np.asarray(img, dtype='uint8')
 
-# Draw final results
-def draw_path(grid, path, title="Path"):
-    # Visualization of the found path using matplotlib
-    fig, ax = plt.subplots(1)
-    ax.margins()
-    # Draw map
-    row = len(grid)     # map size
-    col = len(grid[0])  # map size
-    for i in range(row):
-        for j in range(col):
-            if grid[i][j]: 
-                ax.add_patch(Rectangle((j-0.5, i-0.5),1,1,edgecolor='k',facecolor='k'))  # obstacle
-            else:          
-                ax.add_patch(Rectangle((j-0.5, i-0.5),1,1,edgecolor='k',facecolor='w'))  # free space
-    # Draw path
-    for x, y in path:
-        ax.add_patch(Rectangle((y-0.5, x-0.5),1,1,edgecolor='k',facecolor='b'))          # path
-    ax.add_patch(Rectangle((start[1]-0.5, start[0]-0.5),1,1,edgecolor='k',facecolor='g'))# start
-    ax.add_patch(Rectangle((goal[1]-0.5, goal[0]-0.5),1,1,edgecolor='k',facecolor='r'))  # goal
-    # Graph settings
-    plt.title(title)
-    plt.axis('scaled')
-    plt.gca().invert_yaxis()
+    # Get bianry image
+    threshold = 127
+    map_array = 1 * (map_array > threshold)
+    
+    np.set_printoptions(threshold=np.inf)
+    # print(map_array)
+
+    # Result 2D numpy array
+    return map_array
 
 
 if __name__ == "__main__":
     # Load the map
-    grid, start, goal = load_map('map.csv')
+    start = (200, 75)
+    goal  = (30, 250)
+    map_array = load_map("WPI_map.jpg", 0.3)
 
-    # Search
-    bfs_path, bfs_steps = bfs(grid, start, goal)
-    dfs_path, dfs_steps = dfs(grid, start, goal)
-    dij_path, dij_steps = dijkstra(grid, start, goal)
-    aster_path, aster_steps = astar(grid, start, goal)
+    # # Planning class
+    PRM_planner = PRM(map_array)
+    RRT_planner = RRT(map_array, start, goal)
+    #
+    # # Search with PRM
+    # PRM_planner.sample(n_pts=1000, sampling_method="uniform")
+    # PRM_planner.search(start, goal)
+    # PRM_planner.sample(n_pts=1000, sampling_method="random")
+    # PRM_planner.search(start, goal)
+    # PRM_planner.sample(n_pts=2000, sampling_method="gaussian")
+    # PRM_planner.search(start, goal)
+    # PRM_planner.sample(n_pts=20000, sampling_method="bridge")
+    # PRM_planner.search(start, goal)
 
-    # Show result
-    draw_path(grid, bfs_path, 'BFS')
-    draw_path(grid, dfs_path, 'DFS')
-    draw_path(grid, dij_path, 'Dijkstra')
-    draw_path(grid, aster_path, 'A*')
-    plt.show()
+    # Search with RRT and RRT*
+    RRT_planner.RRT(n_pts=1000)
+    # RRT_planner.RRT_star(n_pts=2000)
