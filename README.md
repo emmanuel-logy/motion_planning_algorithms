@@ -1,4 +1,4 @@
-# Motion Planning Algorithms
+## Path Planning for WPI Campus Map using Traditional Planning Algorithms
 
 ## Sampling Based Algorithms
 The following sampling based algorithms are implemented in Python:
