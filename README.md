@@ -1,4 +1,4 @@
-## Path Planning for WPI Campus Map using Traditional Planning Algorithms
+# Classic Path Planning algorithms for WPI Campus Map
 
 ## Sampling Based Algorithms
 The following sampling based algorithms are implemented in Python:
